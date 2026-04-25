@@ -1,0 +1,25 @@
+<Project>
+  <PropertyGroup>
+    <!-- Try common Windows PowerShell assembly locations for build-time reference -->
+    <PowerShellAssemblyPath Condition="Exists('$(WINDIR)\\System32\\WindowsPowerShell\\v1.0\\System.Management.Automation.dll')">$(WINDIR)\System32\WindowsPowerShell\v1.0\System.Management.Automation.dll</PowerShellAssemblyPath>
+    <PowerShellAssemblyPath Condition="'$(PowerShellAssemblyPath)' == '' and Exists('$(ProgramFiles)\\PowerShell\\7\\System.Management.Automation.dll')">$(ProgramFiles)\PowerShell\7\System.Management.Automation.dll</PowerShellAssemblyPath>
+    <PowerShellAssemblyPath Condition="'$(PowerShellAssemblyPath)' == '' and Exists('$(ProgramFiles(x86))\\PowerShell\\7\\System.Management.Automation.dll')">$(ProgramFiles(x86))\PowerShell\7\System.Management.Automation.dll</PowerShellAssemblyPath>
+  </PropertyGroup>
+
+  <!-- Check GAC location for System.Management.Automation if not found in common install paths -->
+  <ItemGroup Condition="'$(PowerShellAssemblyPath)' == ''">
+    <_PowerShellGac Include="$(WINDIR)\Microsoft.NET\assembly\GAC_MSIL\System.Management.Automation\**\System.Management.Automation.dll" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(PowerShellAssemblyPath)' == ''">
+    <_PowerShellGacList>@(_PowerShellGac->'%(Identity)')</_PowerShellGacList>
+    <_PowerShellGacFirst>$([System.Text.RegularExpressions.Regex]::Match('$(_PowerShellGacList)','^(.*?)(;|$)').Groups[1].Value)</_PowerShellGacFirst>
+    <PowerShellAssemblyPath Condition="'$(_PowerShellGacFirst)' != ''">$(_PowerShellGacFirst)</PowerShellAssemblyPath>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(PowerShellAssemblyPath)' != ''">
+    <Reference Include="System.Management.Automation">
+      <HintPath>$(PowerShellAssemblyPath)</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+</Project>

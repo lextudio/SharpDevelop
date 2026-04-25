@@ -17,9 +17,89 @@
 	</ItemGroup>
 	
 	<Target Name="CompileLanguageResources" Inputs="@(LanguageResource)" Outputs="@(LanguageResource->'$(LanguageResourcePath)%(Filename).resources')">
-		<GenerateResource
-		    Sources="@(LanguageResource)"
-		    OutputResources="@(LanguageResource->'$(LanguageResourcePath)%(Filename).resources')"/>
+		<!-- Try to locate resgen.exe in common SDK/Visual Studio locations; if found, call it directly for each .resx -->
+		<!-- 1) Prefer MSBuild-provided Windows SDK properties when available -->
+		<PropertyGroup>
+			<_WinSdkCandidate1 Condition="'$(WindowsSdkDir)' != '' and '$(WindowsTargetPlatformVersion)' != ''">$(WindowsSdkDir)bin\$(WindowsTargetPlatformVersion)\x86\resgen.exe</_WinSdkCandidate1>
+			<_WinSdkCandidate2 Condition="'$(WindowsSdkDir)' != '' and '$(WindowsTargetPlatformVersion)' != ''">$(WindowsSdkDir)bin\$(WindowsTargetPlatformVersion)\x64\resgen.exe</_WinSdkCandidate2>
+			<ResGenExecutable Condition="'$(ResGenExecutable)' == '' and Exists('$(_WinSdkCandidate1)')">$(_WinSdkCandidate1)</ResGenExecutable>
+			<ResGenExecutable Condition="'$(ResGenExecutable)' == '' and Exists('$(_WinSdkCandidate2)')">$(_WinSdkCandidate2)</ResGenExecutable>
+		</PropertyGroup>
+
+		<!-- 5) Search under Program Files for resgen.exe (prefer NETFX 4.8 Tools if present) -->
+		<ItemGroup Condition="'$(ResGenExecutable)' == ''">
+			<_ResGenFromProgramFiles Include="$(ProgramFiles(x86))\Microsoft SDKs\Windows\**\resgen.exe" />
+			<_ResGenFromProgramFiles Include="$(ProgramFiles)\Microsoft SDKs\Windows\**\resgen.exe" />
+		</ItemGroup>
+		<PropertyGroup Condition="'$(ResGenExecutable)' == '' and '@(_ResGenFromProgramFiles)' != ''">
+			<_ResGenAll>@(_ResGenFromProgramFiles->'%(Identity)')</_ResGenAll>
+			<!-- Prefer any candidate containing '4.8' (NETFX 4.8 Tools) -->
+			<ResGenExecutable>$([System.Text.RegularExpressions.Regex]::Match('$(_ResGenAll)','(?i)([^;]*4\.8[^;]*resgen\.exe)').Groups[1].Value)</ResGenExecutable>
+			<!-- Fallback to the first found candidate -->
+			<ResGenExecutable Condition="'$(ResGenExecutable)' == ''">$([System.Text.RegularExpressions.Regex]::Match('$(_ResGenAll)','^(.*?)(;|$)').Groups[1].Value)</ResGenExecutable>
+		</PropertyGroup>
+
+		<!-- 2) If WindowsSdkDir is set but the precise version isn't available, search under WindowsSdkDir/bin for resgen.exe -->
+		<ItemGroup Condition="'$(ResGenExecutable)' == '' and '$(WindowsSdkDir)' != ''">
+			<_ResGenFromWindowsSdk Include="$(WindowsSdkDir)bin\**\resgen.exe" />
+		</ItemGroup>
+		<PropertyGroup Condition="'$(ResGenExecutable)' == '' and '@(_ResGenFromWindowsSdk)' != ''">
+			<ResGenExecutable>@(_ResGenFromWindowsSdk->'%(Identity)')</ResGenExecutable>
+		</PropertyGroup>
+
+		<!-- 3) Registry: check Windows Kits Installed Roots (KitsRoot10 / KitsRoot81) and search under their bin folders -->
+		<Exec Condition="'$(ResGenExecutable)' == ''" Command='reg query "HKLM\SOFTWARE\Microsoft\Windows Kits\Installed Roots" /v KitsRoot10' ConsoleToMSBuild="true" IgnoreExitCode="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="KitsRoot10Raw" />
+		</Exec>
+		<PropertyGroup Condition="'$(ResGenExecutable)' == '' and '$(KitsRoot10Raw)' != ''">
+			<KitsRoot10>$([System.Text.RegularExpressions.Regex]::Match('$(KitsRoot10Raw)','KitsRoot10\s+REG_SZ\s+(.+)').Groups[1].Value)</KitsRoot10>
+		</PropertyGroup>
+		<ItemGroup Condition="'$(ResGenExecutable)' == '' and '$(KitsRoot10)' != ''">
+			<_ResGenFromKits Include="$(KitsRoot10)bin\**\resgen.exe" />
+		</ItemGroup>
+		<PropertyGroup Condition="'$(ResGenExecutable)' == '' and '@(_ResGenFromKits)' != ''">
+			<ResGenExecutable>@(_ResGenFromKits->'%(Identity)')</ResGenExecutable>
+		</PropertyGroup>
+
+		<!-- Also try KitsRoot81 if KitsRoot10 not found -->
+		<Exec Condition="'$(ResGenExecutable)' == ''" Command='reg query "HKLM\SOFTWARE\Microsoft\Windows Kits\Installed Roots" /v KitsRoot81' ConsoleToMSBuild="true" IgnoreExitCode="true">
+			<Output TaskParameter="ConsoleOutput" PropertyName="KitsRoot81Raw" />
+		</Exec>
+		<PropertyGroup Condition="'$(ResGenExecutable)' == '' and '$(KitsRoot81Raw)' != ''">
+			<KitsRoot81>$([System.Text.RegularExpressions.Regex]::Match('$(KitsRoot81Raw)','KitsRoot81\s+REG_SZ\s+(.+)').Groups[1].Value)</KitsRoot81>
+		</PropertyGroup>
+		<ItemGroup Condition="'$(ResGenExecutable)' == '' and '$(KitsRoot81)' != ''">
+			<_ResGenFromKits81 Include="$(KitsRoot81)bin\**\resgen.exe" />
+		</ItemGroup>
+		<PropertyGroup Condition="'$(ResGenExecutable)' == '' and '@(_ResGenFromKits81)' != ''">
+			<ResGenExecutable>@(_ResGenFromKits81->'%(Identity)')</ResGenExecutable>
+		</PropertyGroup>
+
+		<!-- 4) Fallback: explicit Program Files-based candidates -->
+		<PropertyGroup>
+			<!-- Explicit candidate paths for resgen.exe. The first existing path will be used. -->
+			<_ResGenCandidate1>$(ProgramFiles(x86))\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\resgen.exe</_ResGenCandidate1>
+			<_ResGenCandidate2>$(ProgramFiles(x86))\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.7.1 Tools\ResGen.exe</_ResGenCandidate2>
+			<_ResGenCandidate3>$(ProgramFiles(x86))\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.6.2 Tools\ResGen.exe</_ResGenCandidate3>
+			<_ResGenCandidate4>$(ProgramFiles(x86))\Microsoft SDKs\Windows\v8.1A\bin\NETFX 4.5.1 Tools\resgen.exe</_ResGenCandidate4>
+			<_ResGenCandidate5>$(ProgramFiles(x86))\Microsoft SDKs\Windows\v8.0A\Bin\NETFX 4.0 Tools\resgen.exe</_ResGenCandidate5>
+			<_ResGenCandidate6>$(WindowsSdkDir)bin\resgen.exe</_ResGenCandidate6>
+			<!-- Pick the first existing candidate -->
+			<ResGenExecutable Condition="'$(ResGenExecutable)' == '' and Exists('$(_ResGenCandidate1)')">$(_ResGenCandidate1)</ResGenExecutable>
+			<ResGenExecutable Condition="'$(ResGenExecutable)' == '' and Exists('$(_ResGenCandidate2)')">$(_ResGenCandidate2)</ResGenExecutable>
+			<ResGenExecutable Condition="'$(ResGenExecutable)' == '' and Exists('$(_ResGenCandidate3)')">$(_ResGenCandidate3)</ResGenExecutable>
+			<ResGenExecutable Condition="'$(ResGenExecutable)' == '' and Exists('$(_ResGenCandidate4)')">$(_ResGenCandidate4)</ResGenExecutable>
+			<ResGenExecutable Condition="'$(ResGenExecutable)' == '' and Exists('$(_ResGenCandidate5)')">$(_ResGenCandidate5)</ResGenExecutable>
+			<ResGenExecutable Condition="'$(ResGenExecutable)' == '' and Exists('$(_ResGenCandidate6)')">$(_ResGenCandidate6)</ResGenExecutable>
+		</PropertyGroup>
+
+		<Message Condition="'$(ResGenExecutable)' != ''" Text="Using resgen: $(ResGenExecutable)" Importance="High" />
+		<!-- When a resgen was found, call it once per resource file (MSBuild batching on %(LanguageResource.Identity)) -->
+		<Exec Condition="'$(ResGenExecutable)' != ''"
+		     Command='"$(ResGenExecutable)" "%(LanguageResource.Identity)" "$(LanguageResourcePath)%(LanguageResource.Filename).resources"' />
+
+		<!-- Fallback to MSBuild's GenerateResource when no resgen.exe candidate was located -->
+		<GenerateResource Condition="'$(ResGenExecutable)' == ''" Sources="@(LanguageResource)" OutputResources="@(LanguageResource->'$(LanguageResourcePath)%(Filename).resources')" />
 	</Target>
 	
 	<Target Name="Build" DependsOnTargets="CompileLanguageResources">

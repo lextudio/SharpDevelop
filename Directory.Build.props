@@ -1,0 +1,8 @@
+<Project>
+  <PropertyGroup>
+    <!-- Ensure TargetFrameworkVersion is set early so projects evaluate against .NET 4.8 -->
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <!-- Override projects that still target the 'Client' profile to use the full profile -->
+    <TargetFrameworkProfile Condition="'$(TargetFrameworkProfile)' == 'Client'"></TargetFrameworkProfile>
+  </PropertyGroup>
+</Project>
