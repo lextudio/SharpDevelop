@@ -42,8 +42,8 @@ namespace ICSharpCode.SharpDevelop.Parser
 		public ParserService()
 		{
 			parserDescriptors = AddInTree.BuildItems<ParserDescriptor>("/SharpDevelop/Parser", null, false);
-			// 从配置中读取解析器后端设置，默认为 NRefactory
-			currentParserBackend = SD.PropertyService.Get("SharpDevelop.ParserBackend", ParserBackend.NRefactory);
+			// 从配置中读取解析器后端设置，默认为 Roslyn。
+			currentParserBackend = SD.PropertyService.Get("SharpDevelop.ParserBackend", ParserBackend.Roslyn);
 			this.LoadSolutionProjectsThread = new LoadSolutionProjects();
 		}
 		

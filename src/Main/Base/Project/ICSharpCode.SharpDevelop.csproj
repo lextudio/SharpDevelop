@@ -713,6 +713,13 @@
     <None Include="ICSharpCode.SharpDevelop.addin" />
   </ItemGroup>
 
+  <Target Name="CopySharpDevelopAddInManifest" AfterTargets="Build">
+    <MakeDir Directories="$(MSBuildProjectDirectory)\..\..\..\..\AddIns" />
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\ICSharpCode.SharpDevelop.addin"
+          DestinationFiles="$(MSBuildProjectDirectory)\..\..\..\..\AddIns\ICSharpCode.SharpDevelop.addin"
+          SkipUnchangedFiles="true" />
+  </Target>
+
   <ItemGroup>
     <Resource Include="Editor\CodeCompletion\Images\Class.png" />
     <Resource Include="Editor\CodeCompletion\Images\Constructor.png" />

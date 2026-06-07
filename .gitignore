@@ -28,4 +28,4 @@ bin/
 *.suo
 .DS_Store
 *.user
-/.vs
+.vs/

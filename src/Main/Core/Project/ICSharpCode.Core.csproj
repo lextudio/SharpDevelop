@@ -126,10 +126,10 @@
     <Content Include="..\..\..\..\data\schemas\AddIn.xsd" Link="Src\AddInTree\AddIn\AddIn.xsd" />
   </ItemGroup>
 
-  <Target Name="BeforeBuild">
+  <Target Name="UpdateGlobalAssemblyInfo" BeforeTargets="CoreCompile">
     <MSBuild Projects="$(MSBuildProjectDirectory)\..\..\..\Tools\UpdateAssemblyInfo\UpdateAssemblyInfo.csproj" Targets="Build" Properties="Configuration=Debug" />
-    <Exec Command="UpdateAssemblyInfo.exe --branchname $(BranchName)" Timeout="60000" Condition=" '$(BranchName)' != '' " />
-    <Exec Command="UpdateAssemblyInfo.exe" Timeout="60000" Condition=" '$(BranchName)' == '' " />
+    <Exec Command="$(MSBuildProjectDirectory)\..\..\..\Tools\UpdateAssemblyInfo\bin\Debug\UpdateAssemblyInfo.exe --branchname $(BranchName)" Timeout="60000" Condition=" '$(BranchName)' != '' " />
+    <Exec Command="$(MSBuildProjectDirectory)\..\..\..\Tools\UpdateAssemblyInfo\bin\Debug\UpdateAssemblyInfo.exe" Timeout="60000" Condition=" '$(BranchName)' == '' " />
   </Target>
 
 </Project>

@@ -23,9 +23,9 @@ namespace ICSharpCode.SharpDevelop.Parser
 	/// </summary>
 	public enum ParserBackend
 	{
-		/// <summary>使用 NRefactory 解析器（默认）</summary>
+		/// <summary>使用 NRefactory 解析器</summary>
 		NRefactory = 0,
-		/// <summary>使用 Roslyn 解析器</summary>
+		/// <summary>使用 Roslyn 解析器（默认）</summary>
 		Roslyn = 1,
 		/// <summary>使用 LSP 语言服务器</summary>
 		Lsp = 2
