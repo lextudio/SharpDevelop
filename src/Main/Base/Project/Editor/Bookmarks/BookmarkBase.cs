@@ -84,11 +84,13 @@ namespace ICSharpCode.SharpDevelop.Editor.Bookmarks
 		
 		protected virtual void RemoveMark()
 		{
+#if !HAS_UNO
 			if (document != null) {
 				IBookmarkMargin bookmarkMargin = document.GetService(typeof(IBookmarkMargin)) as IBookmarkMargin;
 				if (bookmarkMargin != null)
 					bookmarkMargin.Bookmarks.Remove(this);
 			}
+#endif
 		}
 		
 		/// <summary>
@@ -123,11 +125,13 @@ namespace ICSharpCode.SharpDevelop.Editor.Bookmarks
 		
 		protected virtual void Redraw()
 		{
+#if !HAS_UNO
 			if (document != null) {
 				IBookmarkMargin bookmarkMargin = document.GetService(typeof(IBookmarkMargin)) as IBookmarkMargin;
 				if (bookmarkMargin != null)
 					bookmarkMargin.Redraw();
 			}
+#endif
 		}
 		
 		public int LineNumber {
@@ -161,17 +165,21 @@ namespace ICSharpCode.SharpDevelop.Editor.Bookmarks
 			}
 		}
 		
+#if !HAS_UNO
 		public static IImage DefaultBookmarkImage {
 			get { return SD.ResourceService.GetImage("Bookmarks.ToggleMark"); }
 		}
-		
+
 		public virtual IImage Image {
 			get { return DefaultBookmarkImage; }
 		}
-		
-		public ImageSource ImageSource {
+
+		public System.Windows.Media.ImageSource ImageSource {
 			get { return this.Image != null ? this.Image.ImageSource : null; }
 		}
+#else
+		public virtual IImage Image => null;
+#endif
 		
 		public virtual void MouseDown(MouseButtonEventArgs e)
 		{
@@ -206,9 +214,9 @@ namespace ICSharpCode.SharpDevelop.Editor.Bookmarks
 		
 		public static readonly Color BreakpointDefaultBackground = Color.FromRgb(180, 38, 38);
 		public static readonly Color BreakpointDefaultForeground = Colors.White;
-		
+
 		public const string CurrentLineBookmarkName = "Current statement";
-		
+
 		public static readonly Color CurrentLineDefaultBackground = Colors.Yellow;
 		public static readonly Color CurrentLineDefaultForeground = Colors.Blue;
 	}

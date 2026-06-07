@@ -149,7 +149,11 @@ namespace ICSharpCode.SharpDevelop.Parser
 				return 0;
 			if (region.EndLine > document.LineCount)
 				return document.TextLength;
+#if HAS_UNO
+			return document.GetOffset(new ICSharpCode.AvalonEdit.Document.TextLocation(region.End.Line, region.End.Column));
+#else
 			return document.GetOffset(region.End.ToAvalonEdit());
+#endif
 		}
 		#endregion
 	}

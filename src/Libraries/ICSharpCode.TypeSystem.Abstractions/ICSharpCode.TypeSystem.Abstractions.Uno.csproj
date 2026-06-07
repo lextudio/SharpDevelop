@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>ICSharpCode.TypeSystem.Abstractions</AssemblyName>
+    <RootNamespace>ICSharpCode.TypeSystem</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);1591;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8619;CS8620;CS8625;CS8765</NoWarn>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="TypeSystem\**\*.cs" />
+    <Compile Include="Utils\**\*.cs" />
+    <Compile Include="Properties\**\*.cs" />
+  </ItemGroup>
+</Project>

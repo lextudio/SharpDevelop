@@ -86,11 +86,15 @@ namespace ICSharpCode.SharpDevelop.Refactoring
 		{
 			lock (syncRoot) {
 				if (parseInformation == null)
+#if HAS_UNO
+					parseInformation = Task.FromResult<ParseInformation>(null);
+#else
 					parseInformation = SD.ParserService.ParseAsync(this.FileName, this.TextSource);
+#endif
 				return parseInformation;
 			}
 		}
-		
+
 		/// <summary>
 		/// Gets the ParseInformation for the file.
 		/// </summary>
@@ -99,7 +103,7 @@ namespace ICSharpCode.SharpDevelop.Refactoring
 			// waiting for the task is safe because we specified the text source in the ParseAsync call
 			return GetParseInformationAsync().Result;
 		}
-		
+
 		/// <summary>
 		/// Gets the ICompilation for the file.
 		/// </summary>
@@ -107,11 +111,15 @@ namespace ICSharpCode.SharpDevelop.Refactoring
 		{
 			lock (syncRoot) {
 				if (compilation == null)
+#if HAS_UNO
+					compilation = Task.FromResult<ICompilation>(null);
+#else
 					compilation = Task.FromResult(SD.ParserService.GetCompilationForFile(this.FileName));
+#endif
 				return compilation;
 			}
 		}
-		
+
 		/// <summary>
 		/// Gets the ICompilation for the file.
 		/// </summary>
@@ -159,8 +167,12 @@ namespace ICSharpCode.SharpDevelop.Refactoring
 			var parseInfo = await GetParseInformationAsync().ConfigureAwait(false);
 			if (parseInfo == null)
 				return null;
+#if HAS_UNO
+			return null;
+#else
 			var compilation = await GetCompilationAsync().ConfigureAwait(false);
 			return await Task.Run(() => SD.ParserService.ResolveAsync(this.FileName, caretLocation, this.TextSource, compilation)).ConfigureAwait(false);
+#endif
 		}
 		
 		/// <summary>

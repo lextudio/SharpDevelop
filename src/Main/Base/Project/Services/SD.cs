@@ -20,13 +20,13 @@ using System;
 using System.ComponentModel.Design;
 using System.Threading.Tasks;
 using ICSharpCode.Core;
+using ICSharpCode.SharpDevelop.Editor;
+using ICSharpCode.SharpDevelop.Gui;
+using ICSharpCode.SharpDevelop.Editor.Bookmarks;
 #if !HAS_UNO
 using ICSharpCode.SharpDevelop.Debugging;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Dom.ClassBrowser;
-using ICSharpCode.SharpDevelop.Editor;
-using ICSharpCode.SharpDevelop.Editor.Bookmarks;
-using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Parser;
 #endif
 using ICSharpCode.SharpDevelop.Project;
@@ -193,98 +193,99 @@ namespace ICSharpCode.SharpDevelop
 		public static IFileSystem FileSystem {
 			get { return GetRequiredService<IFileSystem>(); }
 		}
-#if !HAS_UNO
-		
+
 		/// <inheritdoc see="IStatusBarService"/>
 		public static IStatusBarService StatusBar {
 			get { return GetRequiredService<IStatusBarService>(); }
 		}
-		
-		/// <inheritdoc see="IEditorControlService"/>
-		public static IEditorControlService EditorControlService {
-			get { return GetRequiredService<IEditorControlService>(); }
-		}
-		
-		/// <inheritdoc see="IParserService"/>
-		public static IParserService ParserService {
-			get { return GetRequiredService<IParserService>(); }
-		}
-		
-		/// <inheritdoc see="IAssemblyParserService"/>
-		public static IAssemblyParserService AssemblyParserService {
-			get { return GetRequiredService<IAssemblyParserService>(); }
-		}
-		
+
 		/// <inheritdoc see="IFileService"/>
 		public static IFileService FileService {
 			get { return GetRequiredService<IFileService>(); }
 		}
-		
-		/// <inheritdoc see="IGlobalAssemblyCacheService"/>
-		public static IGlobalAssemblyCacheService GlobalAssemblyCache {
-			get { return GetRequiredService<IGlobalAssemblyCacheService>(); }
-		}
-		
-		/// <inheritdoc see="ITreeNodeFactory"/>
-		public static ITreeNodeFactory TreeNodeFactory {
-			get { return GetRequiredService<ITreeNodeFactory>(); }
-		}
-		
-		/// <inheritdoc see="IClipboard"/>
-		public static IClipboard Clipboard {
-			get { return GetRequiredService<IClipboard>(); }
-		}
-		
-		/// <inheritdoc see="IWinFormsService"/>
-		public static IWinFormsService WinForms {
-			get { return GetRequiredService<IWinFormsService>(); }
-		}
-		
-		/// <inheritdoc see="IBuildService"/>
-		public static IBuildService BuildService {
-			get { return GetRequiredService<IBuildService>(); }
-		}
-		
-		/// <inheritdoc see="IBookmarkManager"/>
-		public static IBookmarkManager BookmarkManager {
-			get { return GetRequiredService<IBookmarkManager>(); }
-		}
-		
+
 		/// <inheritdoc see="IDisplayBindingService"/>
 		public static IDisplayBindingService DisplayBindingService {
 			get { return GetRequiredService<IDisplayBindingService>(); }
 		}
-		
-		/// <inheritdoc see="ILanguageService"/>
-		public static ILanguageService LanguageService {
-			get { return GetRequiredService<ILanguageService>(); }
+
+		/// <inheritdoc see="IEditorControlService"/>
+		public static IEditorControlService EditorControlService {
+			get { return GetRequiredService<IEditorControlService>(); }
 		}
-		
-		/// <inheritdoc see="IUIService"/>
-		public static IUIService UIService {
-			get { return GetRequiredService<IUIService>(); }
-		}
-		
-		/// <inheritdoc see="IMSBuildEngine"/>
-		public static IMSBuildEngine MSBuildEngine {
-			get { return GetRequiredService<IMSBuildEngine>(); }
-		}
-		
-		/// <inheritdoc see="ITemplateService"/>
-		public static ITemplateService Templates {
-			get { return GetRequiredService<ITemplateService>(); }
-		}
-		
+
 		/// <inheritdoc see="IOutputPad"/>
 		public static IOutputPad OutputPad {
 			get { return GetRequiredService<IOutputPad>(); }
 		}
-		
+
+		/// <inheritdoc see="ILanguageService"/>
+		public static ILanguageService LanguageService {
+			get { return GetRequiredService<ILanguageService>(); }
+		}
+
+		/// <inheritdoc see="IBuildService"/>
+		public static IBuildService BuildService {
+			get { return GetRequiredService<IBuildService>(); }
+		}
+
+		/// <inheritdoc see="IBookmarkManager"/>
+		public static IBookmarkManager BookmarkManager {
+			get { return GetRequiredService<IBookmarkManager>(); }
+		}
+
+		/// <inheritdoc see="IClipboard"/>
+		public static IClipboard Clipboard {
+			get { return GetRequiredService<IClipboard>(); }
+		}
+
+#if !HAS_UNO
+
+		/// <inheritdoc see="IParserService"/>
+		public static IParserService ParserService {
+			get { return GetRequiredService<IParserService>(); }
+		}
+
+		/// <inheritdoc see="IAssemblyParserService"/>
+		public static IAssemblyParserService AssemblyParserService {
+			get { return GetRequiredService<IAssemblyParserService>(); }
+		}
+
+		/// <inheritdoc see="IGlobalAssemblyCacheService"/>
+		public static IGlobalAssemblyCacheService GlobalAssemblyCache {
+			get { return GetRequiredService<IGlobalAssemblyCacheService>(); }
+		}
+
+		/// <inheritdoc see="ITreeNodeFactory"/>
+		public static ITreeNodeFactory TreeNodeFactory {
+			get { return GetRequiredService<ITreeNodeFactory>(); }
+		}
+
+		/// <inheritdoc see="IWinFormsService"/>
+		public static IWinFormsService WinForms {
+			get { return GetRequiredService<IWinFormsService>(); }
+		}
+
+		/// <inheritdoc see="IUIService"/>
+		public static IUIService UIService {
+			get { return GetRequiredService<IUIService>(); }
+		}
+
+		/// <inheritdoc see="IMSBuildEngine"/>
+		public static IMSBuildEngine MSBuildEngine {
+			get { return GetRequiredService<IMSBuildEngine>(); }
+		}
+
+		/// <inheritdoc see="ITemplateService"/>
+		public static ITemplateService Templates {
+			get { return GetRequiredService<ITemplateService>(); }
+		}
+
 		/// <inheritdoc see="IClassBrowser"/>
 		public static IClassBrowser ClassBrowser {
 			get { return GetRequiredService<IClassBrowser>(); }
 		}
-		
+
 		/// <inheritdoc see="IDebuggerService"/>
 		public static IDebuggerService Debugger {
 			get { return GetRequiredService<IDebuggerService>(); }

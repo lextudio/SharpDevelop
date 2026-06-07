@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>ICSharpCode.NRefactory</AssemblyName>
+    <RootNamespace>ICSharpCode.NRefactory</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Nullable>enable</Nullable>
+    <NoWarn>$(NoWarn);1591;CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8619;CS8620;CS8625;CS8765;CS8767</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\ICSharpCode.TypeSystem.Abstractions\ICSharpCode.TypeSystem.Abstractions.Uno.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Security.Permissions" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="*.cs" />
+    <Compile Include="Analysis\**\*.cs" />
+    <Compile Include="Completion\**\*.cs" />
+    <Compile Include="Documentation\**\*.cs" />
+    <Compile Include="Editor\**\*.cs" />
+    <Compile Include="PatternMatching\**\*.cs" />
+    <Compile Include="Refactoring\**\*.cs" />
+    <Compile Include="Semantics\**\*.cs" />
+    <Compile Include="TypeSystem\**\*.cs" />
+    <Compile Include="Utils\**\*.cs" />
+  </ItemGroup>
+</Project>
