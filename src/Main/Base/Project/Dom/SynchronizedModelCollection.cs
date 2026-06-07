@@ -19,7 +19,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using ICSharpCode.NRefactory.Utils;
 
 namespace ICSharpCode.SharpDevelop.Dom
 {
@@ -100,7 +99,7 @@ namespace ICSharpCode.SharpDevelop.Dom
 		{
 			Monitor.Enter(syncRoot);
 			IDisposable disposable = underlyingCollection.BatchUpdate();
-			return new CallbackOnDispose(
+			return new DelegateDisposable(
 				delegate {
 					try {
 						if (disposable != null)
@@ -165,5 +164,20 @@ namespace ICSharpCode.SharpDevelop.Dom
 			return GetEnumerator();
 		}
 		#endregion
+
+		sealed class DelegateDisposable : IDisposable
+		{
+			readonly Action action;
+
+			public DelegateDisposable(Action action)
+			{
+				this.action = action;
+			}
+
+			public void Dispose()
+			{
+				action();
+			}
+		}
 	}
 }

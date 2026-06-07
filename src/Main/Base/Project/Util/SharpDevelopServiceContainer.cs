@@ -28,7 +28,7 @@ namespace ICSharpCode.SharpDevelop
 	/// <summary>
 	/// A thread-safe service container class.
 	/// </summary>
-	sealed class SharpDevelopServiceContainer : IServiceProvider, IServiceContainer, IDisposable
+	public sealed class SharpDevelopServiceContainer : IServiceProvider, IServiceContainer, IDisposable
 	{
 		readonly ConcurrentStack<IServiceProvider> fallbackProviders = new ConcurrentStack<IServiceProvider>();
 		readonly Dictionary<Type, object> services = new Dictionary<Type, object>();

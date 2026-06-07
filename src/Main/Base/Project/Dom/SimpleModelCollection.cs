@@ -21,8 +21,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+#if !HAS_UNO
+using ICSharpCode.Core;
 using ICSharpCode.NRefactory;
 using ICSharpCode.NRefactory.Utils;
+#endif
 
 namespace ICSharpCode.SharpDevelop.Dom
 {
@@ -85,7 +88,7 @@ namespace ICSharpCode.SharpDevelop.Dom
 			this.addedItems = null;
 			this.isRaisingEvent = true;
 			try {
-				OnCollectionChanged(removed ?? EmptyList<T>.Instance.AsReadOnly(), added ?? EmptyList<T>.Instance.AsReadOnly());
+				OnCollectionChanged(removed ?? EmptyCollection(), added ?? EmptyCollection());
 			} finally {
 				this.isRaisingEvent = false;
 			}
@@ -101,7 +104,7 @@ namespace ICSharpCode.SharpDevelop.Dom
 			if (isWithinBatchOperation)
 				return null;
 			isWithinBatchOperation = true;
-			return new CallbackOnDispose(
+			return CreateBatchDisposable(
 				delegate {
 					isWithinBatchOperation = false;
 					if (removedItems != null || addedItems != null)
@@ -116,6 +119,41 @@ namespace ICSharpCode.SharpDevelop.Dom
 		{
 			return list.ToArray();
 		}
+
+		static IReadOnlyCollection<T> EmptyCollection()
+		{
+#if HAS_UNO
+			return Array.Empty<T>();
+#else
+			return EmptyList<T>.Instance.AsReadOnly();
+#endif
+		}
+
+		static IDisposable CreateBatchDisposable(Action action)
+		{
+#if HAS_UNO
+			return new DelegateDisposable(action);
+#else
+			return new CallbackOnDispose(action);
+#endif
+		}
+
+#if HAS_UNO
+		sealed class DelegateDisposable : IDisposable
+		{
+			readonly Action action;
+
+			public DelegateDisposable(Action action)
+			{
+				this.action = action;
+			}
+
+			public void Dispose()
+			{
+				action();
+			}
+		}
+#endif
 		
 		public int Count {
 			get { return list.Count; }

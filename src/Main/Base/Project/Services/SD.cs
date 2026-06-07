@@ -20,6 +20,7 @@ using System;
 using System.ComponentModel.Design;
 using System.Threading.Tasks;
 using ICSharpCode.Core;
+#if !HAS_UNO
 using ICSharpCode.SharpDevelop.Debugging;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Dom.ClassBrowser;
@@ -27,9 +28,12 @@ using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Editor.Bookmarks;
 using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Parser;
+#endif
 using ICSharpCode.SharpDevelop.Project;
+#if !HAS_UNO
 using ICSharpCode.SharpDevelop.Templates;
 using ICSharpCode.SharpDevelop.WinForms;
+#endif
 using ICSharpCode.SharpDevelop.Workbench;
 
 namespace ICSharpCode.SharpDevelop
@@ -81,7 +85,7 @@ namespace ICSharpCode.SharpDevelop
 		/// </summary>
 		public static T GetService<T>() where T : class
 		{
-			return ServiceSingleton.ServiceProvider.GetService<T>();
+			return ServiceSingleton.ServiceProvider.GetService(typeof(T)) as T;
 		}
 		
 		/// <summary>
@@ -89,7 +93,7 @@ namespace ICSharpCode.SharpDevelop
 		/// </summary>
 		public static T GetRequiredService<T>() where T : class
 		{
-			return ServiceSingleton.ServiceProvider.GetRequiredService<T>();
+			return ServiceSingleton.GetRequiredService<T>();
 		}
 		
 		/// <summary>
@@ -145,11 +149,6 @@ namespace ICSharpCode.SharpDevelop
 			get { return GetRequiredService<IMessageLoop>(); }
 		}
 		
-		/// <inheritdoc see="IStatusBarService"/>
-		public static IStatusBarService StatusBar {
-			get { return GetRequiredService<IStatusBarService>(); }
-		}
-		
 		/// <inheritdoc see="ILoggingService"/>
 		public static ILoggingService Log {
 			get { return GetRequiredService<ILoggingService>(); }
@@ -170,14 +169,40 @@ namespace ICSharpCode.SharpDevelop
 			get { return GetRequiredService<Core.IResourceService>(); }
 		}
 		
-		/// <inheritdoc see="IEditorControlService"/>
-		public static IEditorControlService EditorControlService {
-			get { return GetRequiredService<IEditorControlService>(); }
-		}
-		
 		/// <inheritdoc see="IAnalyticsMonitor"/>
 		public static IAnalyticsMonitor AnalyticsMonitor {
 			get { return GetRequiredService<IAnalyticsMonitor>(); }
+		}
+		
+		/// <inheritdoc see="IAddInTree"/>
+		public static IAddInTree AddInTree {
+			get { return GetRequiredService<IAddInTree>(); }
+		}
+		
+		/// <inheritdoc see="IShutdownService"/>
+		public static IShutdownService ShutdownService {
+			get { return GetRequiredService<IShutdownService>(); }
+		}
+		
+		/// <inheritdoc see="IProjectService"/>
+		public static IProjectService ProjectService {
+			get { return GetRequiredService<IProjectService>(); }
+		}
+		
+		/// <inheritdoc see="IFileSystem"/>
+		public static IFileSystem FileSystem {
+			get { return GetRequiredService<IFileSystem>(); }
+		}
+#if !HAS_UNO
+		
+		/// <inheritdoc see="IStatusBarService"/>
+		public static IStatusBarService StatusBar {
+			get { return GetRequiredService<IStatusBarService>(); }
+		}
+		
+		/// <inheritdoc see="IEditorControlService"/>
+		public static IEditorControlService EditorControlService {
+			get { return GetRequiredService<IEditorControlService>(); }
 		}
 		
 		/// <inheritdoc see="IParserService"/>
@@ -198,16 +223,6 @@ namespace ICSharpCode.SharpDevelop
 		/// <inheritdoc see="IGlobalAssemblyCacheService"/>
 		public static IGlobalAssemblyCacheService GlobalAssemblyCache {
 			get { return GetRequiredService<IGlobalAssemblyCacheService>(); }
-		}
-		
-		/// <inheritdoc see="IAddInTree"/>
-		public static IAddInTree AddInTree {
-			get { return GetRequiredService<IAddInTree>(); }
-		}
-		
-		/// <inheritdoc see="IShutdownService"/>
-		public static IShutdownService ShutdownService {
-			get { return GetRequiredService<IShutdownService>(); }
 		}
 		
 		/// <inheritdoc see="ITreeNodeFactory"/>
@@ -240,11 +255,6 @@ namespace ICSharpCode.SharpDevelop
 			get { return GetRequiredService<IDisplayBindingService>(); }
 		}
 		
-		/// <inheritdoc see="IProjectService"/>
-		public static IProjectService ProjectService {
-			get { return GetRequiredService<IProjectService>(); }
-		}
-		
 		/// <inheritdoc see="ILanguageService"/>
 		public static ILanguageService LanguageService {
 			get { return GetRequiredService<ILanguageService>(); }
@@ -265,11 +275,6 @@ namespace ICSharpCode.SharpDevelop
 			get { return GetRequiredService<ITemplateService>(); }
 		}
 		
-		/// <inheritdoc see="IFileSystem"/>
-		public static IFileSystem FileSystem {
-			get { return GetRequiredService<IFileSystem>(); }
-		}
-		
 		/// <inheritdoc see="IOutputPad"/>
 		public static IOutputPad OutputPad {
 			get { return GetRequiredService<IOutputPad>(); }
@@ -284,5 +289,6 @@ namespace ICSharpCode.SharpDevelop
 		public static IDebuggerService Debugger {
 			get { return GetRequiredService<IDebuggerService>(); }
 		}
+#endif
 	}
 }
