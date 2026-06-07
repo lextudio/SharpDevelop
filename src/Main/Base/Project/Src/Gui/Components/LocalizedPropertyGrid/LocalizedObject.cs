@@ -84,11 +84,13 @@ namespace ICSharpCode.SharpDevelop.Gui
 		protected void ReFilterProperties()
 		{
 			globalizedProps = null;
+#if !HAS_UNO
 			if (SD.Workbench != null) {
 				SD.MainThread.InvokeAsyncAndForget(delegate {
 					PropertyPad.RefreshItem(this);
 				});
 			}
+#endif
 		}
 		
 		protected virtual void FilterProperties(PropertyDescriptorCollection globalizedProps)

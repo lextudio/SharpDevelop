@@ -117,9 +117,11 @@ namespace ICSharpCode.SharpDevelop.Project
 		internal IProjectItemBackendStore BuildItem {
 			get { return buildItem; }
 			set {
+#if !HAS_UNO
 				if (project is AbstractProject) {
 					((AbstractProject)project).ClearFindFileCache();
 				}
+#endif
 				
 				if (value != null) {
 					virtualMetadata = null;
@@ -169,9 +171,11 @@ namespace ICSharpCode.SharpDevelop.Project
 			}
 			set {
 				lock (SyncRoot) {
+#if !HAS_UNO
 					if (project is AbstractProject) {
 						((AbstractProject)project).ClearFindFileCache();
 					}
+#endif
 					
 					if (buildItem != null)
 						buildItem.EvaluatedInclude = value;

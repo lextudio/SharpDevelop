@@ -19,15 +19,21 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+#if !HAS_UNO
 using System.Drawing.Design;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.Design;
+#else
+using System.IO;
+#endif
 
 using ICSharpCode.Core;
 using ICSharpCode.SharpDevelop.Gui;
+#if !HAS_UNO
 using ICSharpCode.SharpDevelop.Widgets.DesignTimeSupport;
+#endif
 
 namespace ICSharpCode.SharpDevelop.Project
 {
@@ -55,14 +61,20 @@ namespace ICSharpCode.SharpDevelop.Project
 		{
 		}
 		
+		#if HAS_UNO
+		public FileProjectItem(IProject project, IProjectItemBackendStore buildItem)
+		#else
 		internal FileProjectItem(IProject project, IProjectItemBackendStore buildItem)
+		#endif
 			: base(project, buildItem)
 		{
 		}
 		
 		[LocalizedProperty("${res:ICSharpCode.SharpDevelop.Internal.Project.ProjectFile.BuildAction}",
 		                   Description ="${res:ICSharpCode.SharpDevelop.Internal.Project.ProjectFile.BuildAction.Description}")]
+#if !HAS_UNO
 		[Editor(typeof(BuildActionEditor), typeof(UITypeEditor))]
+#endif
 		public string BuildAction {
 			get {
 				return this.ItemType.ItemName;
@@ -82,6 +94,7 @@ namespace ICSharpCode.SharpDevelop.Project
 			set { base.FileName = value; }
 		}
 		
+		#if !HAS_UNO
 		sealed class BuildActionEditor : DropDownEditor
 		{
 			protected override Control CreateDropDownControl(ITypeDescriptorContext context, IWindowsFormsEditorService editorService)
@@ -99,6 +112,7 @@ namespace ICSharpCode.SharpDevelop.Project
 				return itemTypes.Select(it => it.ItemName);
 			}
 		}
+		#endif
 		
 		[LocalizedProperty("${res:ICSharpCode.SharpDevelop.Internal.Project.ProjectFile.CopyToOutputDirectory}",
 		                   Description = "${res:ICSharpCode.SharpDevelop.Internal.Project.ProjectFile.CopyToOutputDirectory.Description}")]
@@ -113,7 +127,9 @@ namespace ICSharpCode.SharpDevelop.Project
 		
 		[LocalizedProperty("${res:ICSharpCode.SharpDevelop.Internal.Project.ProjectFile.CustomTool}",
 		                   Description ="${res:ICSharpCode.SharpDevelop.Internal.Project.ProjectFile.CustomTool.Description}")]
+#if !HAS_UNO
 		[Editor(typeof(CustomToolEditor), typeof(UITypeEditor))]
+#endif
 		public string CustomTool {
 			get {
 				return GetEvaluatedMetadata("Generator");
@@ -124,6 +140,7 @@ namespace ICSharpCode.SharpDevelop.Project
 			}
 		}
 		
+		#if !HAS_UNO
 		sealed class CustomToolEditor : DropDownEditor
 		{
 			protected override Control CreateDropDownControl(ITypeDescriptorContext context, IWindowsFormsEditorService editorService)
@@ -136,6 +153,7 @@ namespace ICSharpCode.SharpDevelop.Project
 				}
 			}
 		}
+		#endif
 
 		[Browsable(false)]
 		public string DependentUpon {
