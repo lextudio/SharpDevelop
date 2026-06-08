@@ -1285,14 +1285,7 @@ namespace ICSharpCode.SharpDevelop.Project
 			} catch (InvalidProjectFileException ex) {
 				LoggingService.Warn(ex);
 				LoggingService.Warn("ErrorCode = " + ex.ErrorCode);
-#if HAS_UNO
-				// Under Uno, MSBuild SDK resolution (e.g. Uno.Sdk) may fail because the SDK
-				// is not registered via the standard MSBuild SDK resolver at runtime.
-				// Treat as non-fatal: project loads with empty items; UI reads .csproj XML directly.
-				success = true;
-#else
 				throw new ProjectLoadException(ex.Message, ex);
-#endif
 			} finally {
 				if (!success)
 					DisposeThisClass();
