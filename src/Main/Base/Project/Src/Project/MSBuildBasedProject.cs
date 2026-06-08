@@ -33,7 +33,9 @@ using ICSharpCode.SharpDevelop.Dom;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Exceptions;
+#if !HAS_UNO
 using ICSharpCode.SharpDevelop.Project.PortableLibrary;
+#endif
 using MSBuild = Microsoft.Build.Evaluation;
 
 namespace ICSharpCode.SharpDevelop.Project
@@ -180,7 +182,11 @@ namespace ICSharpCode.SharpDevelop.Project
 			ReferenceProjectItem[] additionalItems = {
 				new ReferenceProjectItem(this, "mscorlib")
 			};
+#if !HAS_UNO
 			return SD.MSBuildEngine.ResolveAssemblyReferences(this, additionalItems);
+#else
+			return Enumerable.Empty<ReferenceProjectItem>();
+#endif
 		}
 		
 		#region Create new project
@@ -432,9 +438,11 @@ namespace ICSharpCode.SharpDevelop.Project
 				}
 				
 				Dictionary<string, string> globalProps = new Dictionary<string, string>(MSBuildInternals.PropertyNameComparer);
+#if !HAS_UNO
 				var msbuildEngine = SD.Services.GetService<IMSBuildEngine>();
 				if (msbuildEngine != null)
 					globalProps.AddRange(msbuildEngine.GlobalBuildProperties);
+#endif
 				globalProps["Configuration"] = configuration;
 				globalProps["Platform"] = platform;
 				MSBuild.Project project = MSBuildInternals.LoadProject(MSBuildProjectCollection, projectFile, globalProps);
@@ -1112,8 +1120,10 @@ namespace ICSharpCode.SharpDevelop.Project
 				ClearFindFileCache();
 			}
 			
+#if !HAS_UNO
 			if (!isLoading)
 				ProjectBrowserPad.RefreshViewAsync();
+#endif
 		}
 		
 		void AddProjectItem(ProjectItem item)
@@ -1183,17 +1193,23 @@ namespace ICSharpCode.SharpDevelop.Project
 		public override IEnumerable<IBuildable> GetBuildDependencies(ProjectBuildOptions buildOptions)
 		{
 			var result = base.GetBuildDependencies(buildOptions).ToList();
+#if !HAS_UNO
 			foreach (ProjectItem item in GetItemsOfType(ItemType.ProjectReference)) {
 				ProjectReferenceProjectItem prpi = item as ProjectReferenceProjectItem;
 				if (prpi != null && prpi.ReferencedProject != null)
 					result.Add(prpi.ReferencedProject);
 			}
+#endif
 			return result;
 		}
 		
 		public override Task<bool> BuildAsync(ProjectBuildOptions options, IBuildFeedbackSink feedbackSink, IProgressMonitor progressMonitor)
 		{
+#if !HAS_UNO
 			return SD.MSBuildEngine.BuildAsync(this, options, feedbackSink, progressMonitor.CancellationToken);
+#else
+			throw new NotImplementedException("Override BuildAsync in the derived project class.");
+#endif
 		}
 		
 		public override ProjectBuildOptions CreateProjectBuildOptions(BuildOptions options, bool isRootBuildable)
@@ -1254,11 +1270,13 @@ namespace ICSharpCode.SharpDevelop.Project
 						} else {
 							throw;
 						}
+#if !HAS_UNO
 					} else if (ex.ErrorCode == "MSB4019" && ex.BaseMessage.Contains("Microsoft.Portable.") && !ProfileList.IsPortableLibraryInstalled()) {
 						throw new ToolNotFoundProjectLoadException(ex.Message, ex) {
 							Description = CheckPortableLibraryInstalled.CouldNotFindToolsDescription,
 							LinkTarget = CheckPortableLibraryInstalled.DownloadUrl
 						};
+#endif
 					} else {
 						throw;
 					}
@@ -1267,7 +1285,14 @@ namespace ICSharpCode.SharpDevelop.Project
 			} catch (InvalidProjectFileException ex) {
 				LoggingService.Warn(ex);
 				LoggingService.Warn("ErrorCode = " + ex.ErrorCode);
+#if HAS_UNO
+				// Under Uno, MSBuild SDK resolution (e.g. Uno.Sdk) may fail because the SDK
+				// is not registered via the standard MSBuild SDK resolver at runtime.
+				// Treat as non-fatal: project loads with empty items; UI reads .csproj XML directly.
+				success = true;
+#else
 				throw new ProjectLoadException(ex.Message, ex);
+#endif
 			} finally {
 				if (!success)
 					DisposeThisClass();
@@ -1365,7 +1390,9 @@ namespace ICSharpCode.SharpDevelop.Project
 				}
 				watcher.Enable();
 			}
+#if !HAS_UNO
 			FileUtility.RaiseFileSaved(new FileNameEventArgs(fileName));
+#endif
 		}
 		#endregion
 		

@@ -37,6 +37,9 @@ using ICSharpCode.SharpDevelop.Gui.OptionPanels;
 using ICSharpCode.SharpDevelop.Parser;
 using ICSharpCode.SharpDevelop.Refactoring;
 using ICSharpCode.SharpDevelop.Workbench;
+#if HAS_UNO
+using FileAttributes = System.IO.FileAttributes;
+#endif
 
 namespace ICSharpCode.SharpDevelop.Project
 {

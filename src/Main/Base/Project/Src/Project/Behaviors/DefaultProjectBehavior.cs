@@ -60,9 +60,17 @@ namespace ICSharpCode.SharpDevelop.Project
 				return;
 			}
 			if (withDebugging) {
+#if !HAS_UNO
 				SD.Debugger.Start(psi);
+#else
+				System.Diagnostics.Process.Start(psi);
+#endif
 			} else {
+#if !HAS_UNO
 				SD.Debugger.StartWithoutDebugging(psi);
+#else
+				System.Diagnostics.Process.Start(psi);
+#endif
 			}
 		}
 		
@@ -98,11 +106,13 @@ namespace ICSharpCode.SharpDevelop.Project
 			// breakpoints and files
 			preferences.SetList("bookmarks", SD.BookmarkManager.GetProjectBookmarks(Project));
 			List<string> files = new List<string>();
+#if !HAS_UNO
 			foreach (var fileName in FileService.GetOpenFiles()) {
 				if (fileName != null && Project.IsFileInProject(fileName)) {
 					files.Add(fileName);
 				}
 			}
+#endif
 			preferences.SetList("openFiles", files);
 		}
 		
@@ -120,6 +130,7 @@ namespace ICSharpCode.SharpDevelop.Project
 					filesToOpen.Add(fileName);
 				}
 			}
+#if !HAS_UNO
 			System.Windows.Threading.Dispatcher.CurrentDispatcher.BeginInvoke(
 				System.Windows.Threading.DispatcherPriority.Loaded,
 				new Action(
@@ -129,6 +140,8 @@ namespace ICSharpCode.SharpDevelop.Project
 							FileService.OpenFile(file);
 						NavigationService.ResumeLogging();
 					}));
+#endif
+			// HAS_UNO: file reopening deferred — no workbench file service available at startup
 		}
 	}
 }
