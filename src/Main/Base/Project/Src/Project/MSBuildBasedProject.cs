@@ -176,7 +176,41 @@ namespace ICSharpCode.SharpDevelop.Project
 				CreateItemsListFromMSBuild();
 			}
 		}
-		
+#if HAS_UNO
+		/// <summary>
+		/// Re-reads this project's .csproj (and .csproj.user, if present) from disk and rebuilds
+		/// the in-memory Items list from the fresh evaluation — for when the project file changes
+		/// outside the IDE. Deliberately narrower than the initial load in <see cref="LoadProjectInternal"/>:
+		/// it does not re-run the interactive ToolsVersion-upgrade prompt or re-read the project GUID,
+		/// since those are one-time-load concerns not expected to matter for an external edit reload.
+		/// </summary>
+		public void ReloadFromDisk()
+		{
+			PerformUpdateOnProjectFile(delegate {
+				// ProjectRootElement.Open(path, collection) returns the collection's cached instance
+				// for a path it has already loaded — it does NOT notice the file changed on disk.
+				// Reload(throwIfUnsavedChanges: false) forces the existing ProjectRootElement to
+				// re-read its content from disk, discarding any in-memory-only changes in favor of
+				// what's actually on disk (the whole point of an external-edit reload).
+				if (projectFile != null && File.Exists(this.FileName.ToString())) {
+					projectFile.Reload(false);
+				} else {
+					projectFile = ProjectRootElement.Open(this.FileName.ToString(), MSBuildProjectCollection);
+				}
+
+				string userFileName = this.FileName + ".user";
+				if (File.Exists(userFileName)) {
+					if (userProjectFile != null && userProjectFile.FullPath == userFileName) {
+						userProjectFile.Reload(false);
+					} else {
+						userProjectFile = ProjectRootElement.Open(userFileName, MSBuildProjectCollection);
+					}
+				} else {
+					userProjectFile = ProjectRootElement.Create(userFileName, MSBuildProjectCollection);
+				}
+			});
+		}
+#endif
 		public override IEnumerable<ReferenceProjectItem> ResolveAssemblyReferences(CancellationToken cancellationToken)
 		{
 			ReferenceProjectItem[] additionalItems = {
