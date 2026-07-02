@@ -22,8 +22,8 @@ using System.Threading;
 
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.Core;
-using ICSharpCode.NRefactory.Semantics;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.SharpDevelop.Editor.Search;
 using ICSharpCode.SharpDevelop.Project;
 

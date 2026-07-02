@@ -18,7 +18,7 @@
 
 using System;
 using System.Linq;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Editor.CodeCompletion;
 using ICSharpCode.SharpDevelop.Refactoring;

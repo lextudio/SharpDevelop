@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.AvalonEdit.Folding;
 using ICSharpCode.Core;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
 
 namespace ICSharpCode.SharpDevelop.Parser
 {

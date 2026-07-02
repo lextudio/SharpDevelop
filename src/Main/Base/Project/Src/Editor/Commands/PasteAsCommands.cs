@@ -23,7 +23,7 @@ using System.IO;
 
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.Core;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.SharpDevelop.Project;
 using Microsoft.CSharp;
 

@@ -31,7 +31,7 @@ using System.Xml.Linq;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.Core;
 using ICSharpCode.Core.Presentation;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Parser;
 using ICSharpCode.SharpDevelop.Project;

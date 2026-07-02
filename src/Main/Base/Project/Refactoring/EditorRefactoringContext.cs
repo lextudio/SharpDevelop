@@ -22,8 +22,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.Core;
-using ICSharpCode.NRefactory.Semantics;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Parser;
 
@@ -60,7 +59,7 @@ namespace ICSharpCode.SharpDevelop.Refactoring
 		public ITextSource TextSource { get; private set; }
 		
 		readonly int caretOffset;
-		readonly TextLocation caretLocation;
+		readonly ICSharpCode.AvalonEdit.Document.TextLocation caretLocation;
 		
 		/// <summary>
 		/// Gets the offset of the caret, at the time when this editor context was created.
@@ -72,7 +71,7 @@ namespace ICSharpCode.SharpDevelop.Refactoring
 		/// <summary>
 		/// Gets caret location, at the time when this editor context was created.
 		/// </summary>
-		public TextLocation CaretLocation {
+		public ICSharpCode.AvalonEdit.Document.TextLocation CaretLocation {
 			get { return caretLocation; }
 		}
 		

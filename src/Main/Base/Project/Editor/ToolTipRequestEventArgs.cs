@@ -18,7 +18,7 @@
 
 using System;
 using ICSharpCode.AvalonEdit.Document;
-using ICSharpCode.NRefactory.Semantics;
+using ICSharpCode.TypeSystem;
 
 namespace ICSharpCode.SharpDevelop.Editor
 {

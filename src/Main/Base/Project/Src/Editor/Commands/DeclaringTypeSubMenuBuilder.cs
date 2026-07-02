@@ -23,8 +23,8 @@ using System.Windows;
 using System.Windows.Controls;
 using ICSharpCode.Core;
 using ICSharpCode.Core.Presentation;
-using ICSharpCode.NRefactory.Semantics;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.SharpDevelop.Dom;
 
 namespace ICSharpCode.SharpDevelop.Editor.Commands

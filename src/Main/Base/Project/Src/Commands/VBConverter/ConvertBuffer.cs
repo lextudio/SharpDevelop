@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 /* TODO: Reimplement C#<->VB converter
 using ICSharpCode.Core;
-using ICSharpCode.NRefactory;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.NRefactory.PrettyPrinter;
 using ICSharpCode.NRefactory.Visitors;
 using ICSharpCode.SharpDevelop.Gui;

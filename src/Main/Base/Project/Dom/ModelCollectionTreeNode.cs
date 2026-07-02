@@ -20,7 +20,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using ICSharpCode.NRefactory.Utils;
+using ICSharpCode.TypeSystem.Utils;
 using ICSharpCode.TreeView;
 
 namespace ICSharpCode.SharpDevelop.Dom

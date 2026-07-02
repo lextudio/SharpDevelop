@@ -24,9 +24,9 @@ using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.Core;
-using ICSharpCode.NRefactory.TypeSystem;
-using ICSharpCode.NRefactory.TypeSystem.Implementation;
-using ICSharpCode.NRefactory.Utils;
+using ICSharpCode.TypeSystem;
+using ICSharpCode.TypeSystem;
+using ICSharpCode.TypeSystem.Utils;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Project;
 

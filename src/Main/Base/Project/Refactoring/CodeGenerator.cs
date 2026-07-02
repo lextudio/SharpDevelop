@@ -18,8 +18,8 @@
 
 using System;
 using ICSharpCode.Core;
-using ICSharpCode.NRefactory;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.SharpDevelop.Project;
 
 namespace ICSharpCode.SharpDevelop.Refactoring

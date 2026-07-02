@@ -23,7 +23,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using ICSharpCode.Core;
 using ICSharpCode.NRefactory.Analysis;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.SharpDevelop.Editor;
 using ICSharpCode.SharpDevelop.Editor.Search;
 using ICSharpCode.SharpDevelop.Parser;

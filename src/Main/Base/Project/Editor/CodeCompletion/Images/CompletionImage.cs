@@ -22,8 +22,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using ICSharpCode.NRefactory.TypeSystem;
-using ICSharpCode.NRefactory.TypeSystem.Implementation;
+using ICSharpCode.TypeSystem;
+using ICSharpCode.TypeSystem;
 
 namespace ICSharpCode.SharpDevelop.Editor.CodeCompletion
 {

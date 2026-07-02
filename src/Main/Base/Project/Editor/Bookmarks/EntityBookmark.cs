@@ -22,7 +22,7 @@ using System.Windows.Input;
 using ICSharpCode.AvalonEdit.Document;
 using ICSharpCode.Core;
 using ICSharpCode.Core.Presentation;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
 
 namespace ICSharpCode.SharpDevelop.Editor.Bookmarks
 {

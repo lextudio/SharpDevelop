@@ -20,7 +20,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using ICSharpCode.NRefactory.Utils;
+using ICSharpCode.TypeSystem.Utils;
 
 namespace ICSharpCode.SharpDevelop.Dom
 {

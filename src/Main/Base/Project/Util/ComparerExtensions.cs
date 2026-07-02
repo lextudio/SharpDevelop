@@ -18,7 +18,7 @@
 
 using System;
 using System.Collections.Generic;
-using ICSharpCode.NRefactory.Utils;
+using ICSharpCode.TypeSystem.Utils;
 
 namespace ICSharpCode.SharpDevelop
 {

@@ -19,7 +19,7 @@
 using System;
 using System.Linq;
 using System.Threading;
-using ICSharpCode.NRefactory.Utils;
+using ICSharpCode.TypeSystem.Utils;
 
 namespace ICSharpCode.SharpDevelop.Util
 {

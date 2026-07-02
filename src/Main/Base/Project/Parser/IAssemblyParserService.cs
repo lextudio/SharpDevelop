@@ -24,7 +24,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using ICSharpCode.Core;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.SharpDevelop.Dom;
 using ICSharpCode.SharpDevelop.Dom.ClassBrowser;
 

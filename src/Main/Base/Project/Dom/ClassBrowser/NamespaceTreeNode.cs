@@ -19,8 +19,8 @@
 using System;
 using System.Collections.Generic;
 using System.Windows.Media;
-using ICSharpCode.NRefactory.TypeSystem;
-using ICSharpCode.NRefactory.Utils;
+using ICSharpCode.TypeSystem;
+using ICSharpCode.TypeSystem.Utils;
 using ICSharpCode.TreeView;
 using ICSharpCode.SharpDevelop.Project;
 

@@ -23,8 +23,8 @@ using System.Collections.Specialized;
 using System.Linq;
 #if !HAS_UNO
 using ICSharpCode.Core;
-using ICSharpCode.NRefactory;
-using ICSharpCode.NRefactory.Utils;
+using ICSharpCode.TypeSystem;
+using ICSharpCode.TypeSystem.Utils;
 #endif
 
 namespace ICSharpCode.SharpDevelop.Dom

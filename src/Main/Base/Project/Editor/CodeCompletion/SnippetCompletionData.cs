@@ -17,7 +17,7 @@
 // DEALINGS IN THE SOFTWARE.
 
 using System;
-using ICSharpCode.NRefactory;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.NRefactory.Completion;
 using ICSharpCode.SharpDevelop.Editor.CodeCompletion;
 

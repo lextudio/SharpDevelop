@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using ICSharpCode.NRefactory;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.NRefactory.CSharp;
 using Attribute = ICSharpCode.NRefactory.CSharp.Attribute;
 using CSharpParser = ICSharpCode.NRefactory.CSharp.CSharpParser;

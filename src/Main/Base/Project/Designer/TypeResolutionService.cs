@@ -23,7 +23,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using ICSharpCode.Core;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.SharpDevelop;
 using ICSharpCode.SharpDevelop.Gui;
 using ICSharpCode.SharpDevelop.Project;

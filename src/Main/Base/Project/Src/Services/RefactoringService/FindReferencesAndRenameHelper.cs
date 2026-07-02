@@ -20,8 +20,8 @@ using System;
 using System.Linq;
 
 using ICSharpCode.Core;
-using ICSharpCode.NRefactory.Semantics;
-using ICSharpCode.NRefactory.TypeSystem;
+using ICSharpCode.TypeSystem;
+using ICSharpCode.TypeSystem;
 using ICSharpCode.SharpDevelop.Editor.Search;
 
 namespace ICSharpCode.SharpDevelop.Refactoring

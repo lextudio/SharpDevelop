@@ -20,7 +20,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using ICSharpCode.NRefactory;
+using ICSharpCode.TypeSystem;
+using ICSharpCode.TypeSystem.Utils;
 using ICSharpCode.SharpDevelop.Dom;
 using Microsoft.Build.Construction;
 
