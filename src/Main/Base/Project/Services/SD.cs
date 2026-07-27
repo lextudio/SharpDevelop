@@ -41,7 +41,7 @@ namespace ICSharpCode.SharpDevelop
 	/// <summary>
 	/// Static entry point for retrieving SharpDevelop services.
 	/// </summary>
-	public static class SD
+	public static partial class SD
 	{
 		/// <summary>
 		/// Gets the main service container for SharpDevelop.
